@@ -118,10 +118,14 @@ make check
 `make check` runs `bash -n`, shellcheck when installed, the smoke tests and the
 asset check. The screenshot comes from a real `gentoo/stage3` container:
 
+`tests/assets.sh` also verifies `assets/source.sha256`: if the script changes without regenerating the screenshots, `make check` fails.
+
 ```bash
 podman run --rm -v "$PWD:/repo:ro,Z" gentoo/stage3 \
   bash /repo/gentoo-system-maintenance.sh --check
 ```
+
+`make container-test` runs the container/mock test (needs podman).
 
 ## Limits
 
