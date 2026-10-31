@@ -17,3 +17,4 @@ test:
 
 container-test:
 	bash tests/emerge_runtime.sh
+	bash tests/preview_failure.sh

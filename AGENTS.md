@@ -49,6 +49,8 @@ podman run --rm -v "$PWD:/repo:ro,Z" gentoo/stage3 \
   proven for real.
 - `--ask=n` is valid (checked with `emerge --ask=n --version`).
 
+- A failed `emerge -puDN @world` must be reported with its error tail, not turned into zero. `tests/preview_failure.sh` pins it.
+
 ## Definition of done
 
 - [ ] `make check` passes.

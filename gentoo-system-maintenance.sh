@@ -97,20 +97,31 @@ info "==> Checking what would change"
 if (( DRY_RUN )); then
   info "==> Dry run, skipping the preview queries"
 else
-  preview=$(emerge -puDN @world 2>&1 || true)
-  upgrades=$(grep -c '^\[' <<<"$preview" || true)
-  info "==> Packages to build: ${PURPLE}${upgrades}${NC}"
-  if (( upgrades > 0 )); then
-    grep '^\[' <<<"$preview" | head -10 | sed 's/^/    /'
-    if (( upgrades > 10 )); then
-      info "==> ... and $((upgrades - 10)) more"
+  rc=0
+  preview=$(emerge -puDN @world 2>&1) || rc=$?
+  if (( rc == 0 )); then
+    upgrades=$(grep -c '^\[' <<<"$preview" || true)
+    info "==> Packages to build: ${PURPLE}${upgrades}${NC}"
+    if (( upgrades > 0 )); then
+      grep '^\[' <<<"$preview" | head -10 | sed 's/^/    /'
+      if (( upgrades > 10 )); then
+        info "==> ... and $((upgrades - 10)) more"
+      fi
     fi
+  else
+    warn "==> Could not build the update plan (emerge exit $rc)"
+    printf '%s\n' "$preview" | tail -5 | sed 's/^/    /'
   fi
 
-  depclean_preview=$(emerge --depclean --pretend 2>/dev/null || true)
-  depclean_count=$(grep -c '^\[' <<<"$depclean_preview" || true)
-  if (( depclean_count > 0 )); then
-    warn "==> Packages to depclean: ${depclean_count}"
+  rc=0
+  depclean_preview=$(emerge --depclean --pretend 2>/dev/null) || rc=$?
+  if (( rc != 0 )); then
+    warn "==> Could not list depclean candidates (emerge exit $rc)"
+  else
+    depclean_count=$(grep -c '^\[' <<<"$depclean_preview" || true)
+    if (( depclean_count > 0 )); then
+      warn "==> Packages to depclean: ${depclean_count}"
+    fi
   fi
 fi
 

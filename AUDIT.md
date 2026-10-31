@@ -17,7 +17,7 @@ make: *** No rule to make target 'check'.  Stop.
 History read: `bbe8c58` initial release. Pull requests: none. There is no
 `origin` remote, so `gh pr list` has nothing to read.
 
-Findings: 4 (2 fixed, 2 not bugs).
+Findings: 5 (3 fixed, 2 not bugs).
 
 ## F1 — No tests, CI or Makefile (Medium)
 
@@ -42,6 +42,15 @@ in a `gentoo/stage3` container. `--ask=n` is accepted.
 dry run and `--` to pass options to emerge; it does not ask before emerging.
 `emerge` without `--ask` does not prompt either.
 **Status:** not a bug. No change.
+
+## F5 — A failed plan is reported as zero packages (High)
+
+**Claim:** the preview shows how many packages would be built.
+**Evidence:** with a mock `emerge` whose `-puDN @world` exits 1, the script
+printed "Packages to build: 0".
+**Cause:** `preview=$(... || true)` discarded the exit status.
+**Fix:** check the status and warn that the plan is unavailable.
+**Status:** fixed, test `tests/preview_failure.sh`.
 
 ## Post-audit verification
 
