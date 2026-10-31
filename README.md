@@ -108,6 +108,29 @@ The full `emerge -uDN @world` was **not** run: it builds Python and a toolchain
 from source, which is hours of work inside a container. The build path is the
 same code that `--check` previews, but it has not been executed end to end here.
 
+## Verify it yourself
+
+```bash
+make check
+```
+
+`make check` runs `bash -n`, shellcheck when installed, the smoke tests and the
+asset check. The screenshot comes from a real `gentoo/stage3` container:
+
+```bash
+podman run --rm -v "$PWD:/repo:ro,Z" gentoo/stage3 \
+  bash /repo/gentoo-system-maintenance.sh --check
+```
+
+## Limits
+
+- It does not run a full world build in the repository's tests. That is hours of
+  compilation; `--check` proves the sync, dependency resolution and plan.
+- It does not manage profiles, USE flags, binhosts or kernel rebuilds.
+- It does not replace `eselect` or `dispatch-conf`.
+- `eclean-dist --destructive` needs `gentoolkit`; without it the distfiles step
+  is skipped.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
