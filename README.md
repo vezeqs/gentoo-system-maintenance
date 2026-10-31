@@ -125,7 +125,8 @@ podman run --rm -v "$PWD:/repo:ro,Z" gentoo/stage3 \
   bash /repo/gentoo-system-maintenance.sh --check
 ```
 
-`make container-test` runs the container/mock test (needs podman).
+`make container-test` runs the container/mock test (needs podman); CI runs it
+in `.github/workflows/container-tests.yml`.
 
 ## Limits
 
