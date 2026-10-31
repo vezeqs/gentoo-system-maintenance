@@ -14,3 +14,6 @@ test:
 	bash tests/smoke.sh ./$(SCRIPT)
 	bash tests/docs.sh
 	bash tests/assets.sh
+
+container-test:
+	bash tests/emerge_runtime.sh

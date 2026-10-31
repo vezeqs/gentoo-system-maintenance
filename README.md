@@ -103,6 +103,7 @@ curl rebuild with HTTP/3.
 | Image | Result |
 |-------|--------|
 | `gentoo/stage3` | `--check` synced the Portage tree and produced a plan of 11 packages |
+| `gentoo/stage3` + mock `emerge` | command sequence: sync, pretend, preserved-rebuild, world update, depclean, clean |
 
 The full `emerge -uDN @world` was **not** run: it builds Python and a toolchain
 from source, which is hours of work inside a container. The build path is the
@@ -125,7 +126,8 @@ podman run --rm -v "$PWD:/repo:ro,Z" gentoo/stage3 \
 ## Limits
 
 - It does not run a full world build in the repository's tests. That is hours of
-  compilation; `--check` proves the sync, dependency resolution and plan.
+  compilation; `--check` proves the sync, dependency resolution and plan, and
+  `tests/emerge_runtime.sh` proves the command sequence with a mock `emerge`.
 - It does not manage profiles, USE flags, binhosts or kernel rebuilds.
 - It does not replace `eselect` or `dispatch-conf`.
 - `eclean-dist --destructive` needs `gentoolkit`; without it the distfiles step

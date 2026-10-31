@@ -42,3 +42,11 @@ in a `gentoo/stage3` container. `--ask=n` is accepted.
 dry run and `--` to pass options to emerge; it does not ask before emerging.
 `emerge` without `--ask` does not prompt either.
 **Status:** not a bug. No change.
+
+## Post-audit verification
+
+- `tests/emerge_runtime.sh` passes: the mock `emerge` logs `--sync`,
+  `-puDN @world`, `@preserved-rebuild --ask=n`,
+  `-uDN @world --keep-going --ask=n`, `--depclean --ask=n`, `--clean`.
+- `--check` against `gentoo/stage3` synced the tree and produced a plan of 11
+  packages.

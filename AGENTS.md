@@ -44,8 +44,9 @@ podman run --rm -v "$PWD:/repo:ro,Z" gentoo/stage3 \
 - `emerge --sync` can fail without git; the script falls back to
   `emerge-webrsync`.
 - `revdep-rebuild` and `eclean-dist` need `gentoolkit`; both are guarded.
-- The full `emerge -uDN @world` was not run in the audit. Only the sync and
-  pretend path is proven.
+- The full `emerge -uDN @world` was not run in the audit. `tests/emerge_runtime.sh`
+  proves the command sequence with a mock `emerge`; the sync and pretend path is
+  proven for real.
 - `--ask=n` is valid (checked with `emerge --ask=n --version`).
 
 ## Definition of done
